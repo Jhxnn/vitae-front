@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -12,20 +13,30 @@ export class LoginComponent {
     email: ['', [Validators.required, Validators.email]]
   });
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   onSubmit() {
     if (this.form.invalid) return;
 
-    // Simulando resposta da API com um ID de usuário
-    const fakeLoggedUser = {
-      id: crypto.randomUUID(), // substitua com o ID retornado pela API real
+    const body = {
       name: this.form.value.name,
       email: this.form.value.email
     };
 
-    localStorage.setItem('userId', fakeLoggedUser.id!);
-    alert('Usuário logado com sucesso!');
-    this.router.navigate(['/upload-cv']);
+    this.http.post<any>('https://vitae-api.onrender.com/api/v1/user/login', body)
+      .subscribe({
+        next: (user) => {
+          localStorage.setItem('userId', user.id); // salva ID real
+          alert('Usuário logado com sucesso!');
+          this.router.navigate(['/upload-cv']);
+        },
+        error: () => {
+          alert('Falha no login. Verifique os dados.');
+        }
+      });
   }
 }
