@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -12,20 +13,30 @@ export class RegisterComponent {
     email: ['', [Validators.required, Validators.email]]
   });
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   onSubmit() {
     if (this.form.invalid) return;
 
-    const fakeUser = {
-      id: crypto.randomUUID(), // simula id da API
+    const body = {
       name: this.form.value.name,
       email: this.form.value.email
     };
 
-    // Simula cadastro e login imediato
-    localStorage.setItem('userId', fakeUser.id!);
-    alert('Usuário cadastrado e logado com sucesso!');
-    this.router.navigate(['/upload-cv']); // redireciona após cadastro
+    this.http.post<any>('https://vitae-api.onrender.com/api/v1/user', body)
+      .subscribe({
+        next: (user) => {
+          localStorage.setItem('userId', user.id); // salva ID real
+          alert('Usuário cadastrado com sucesso!');
+          this.router.navigate(['/upload-cv']);
+        },
+        error: () => {
+          alert('Erro ao cadastrar. Verifique os dados ou tente novamente.');
+        }
+      });
   }
 }
