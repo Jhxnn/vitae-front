@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-
+import { NotificationService } from '../../shared/notification.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -16,11 +16,15 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private notification: NotificationService
   ) {}
 
   onSubmit() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.notification.showError('Preencha todos os campos corretamente.');
+      return;
+    }
 
     const body = {
       name: this.form.value.name,
@@ -30,12 +34,12 @@ export class LoginComponent {
     this.http.post<any>('https://vitae-api.onrender.com/api/v1/user/login', body)
       .subscribe({
         next: (user) => {
-          localStorage.setItem('userId', user.id); // salva ID real
-          alert('Usuário logado com sucesso!');
+          localStorage.setItem('userId', user.id);
+          this.notification.showSuccess('Login realizado com sucesso!');
           this.router.navigate(['/upload-cv']);
         },
         error: () => {
-          alert('Falha no login. Verifique os dados.');
+          this.notification.showError('Falha no login. Verifique os dados.');
         }
       });
   }
