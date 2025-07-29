@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { UploadCvRoutingModule } from './upload-cv-routing.module';
 import { UploadCvComponent } from './upload-cv.component';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     CommonModule,
     UploadCvRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ]
 })
 export class UploadCvModule { }
