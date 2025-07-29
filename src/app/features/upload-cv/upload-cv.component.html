@@ -1,1 +1,39 @@
-<p>upload-cv works!</p>
+<div class="min-h-screen flex items-center justify-center bg-[#0F0F0F] px-4">
+  <div class="bg-[#1A1A1A] p-8 rounded-2xl shadow-lg w-full max-w-md">
+    <h2 class="text-3xl font-bold text-white mb-6 text-center">Upload de Currículo</h2>
+
+    <form (ngSubmit)="onSubmit()" class="space-y-6">
+      <div>
+        <label for="cvFile" class="block text-sm text-white mb-2">Selecione o arquivo (PDF)</label>
+        <input
+          id="cvFile"
+          type="file"
+          accept="application/pdf"
+          (change)="onFileSelected($event)"
+          class="block w-full text-sm text-white border border-[#2D2C3C] rounded-lg bg-[#2A2A2A] px-4 py-2
+                 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold
+                 file:bg-[#1ED6B6] file:text-[#2D2C3C] hover:file:bg-[#17bda0]"
+        />
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="!selectedFile || isLoading"
+        class="w-full bg-[#1ED6B6] hover:bg-[#17bda0] text-[#2D2C3C] font-semibold py-3 rounded-xl
+               disabled:opacity-50 flex items-center justify-center gap-2 transition duration-300"
+      >
+        <ng-container *ngIf="!isLoading; else loading">
+          Enviar Currículo
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </ng-container>
+
+        <ng-template #loading>
+          <span class="animate-spin h-5 w-5 border-2 border-t-transparent border-[#2D2C3C] rounded-full"></span>
+        </ng-template>
+      </button>
+    </form>
+  </div>
+</div>

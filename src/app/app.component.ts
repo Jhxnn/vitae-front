@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'vitae-front';
+  constructor(public router: Router) {}
+
+  get showNavbar(): boolean {
+    return !['/login', '/register'].includes(this.router.url);
+  }
 }
