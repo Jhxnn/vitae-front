@@ -40,7 +40,7 @@ export class LoginComponent {
   this.http.post<any>('https://vitae-api.onrender.com/api/v1/user/login', body)
     .subscribe({
       next: (user) => {
-        localStorage.setItem('userId', user.id);
+        localStorage.setItem('userId', user.userId);
         this.notification.showSuccess('Login realizado com sucesso!');
         this.router.navigate(['/upload-cv']);
         this.isLoading = false;
