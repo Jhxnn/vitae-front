@@ -35,5 +35,11 @@
         </ng-template>
       </button>
     </form>
+    <div *ngIf="cvResponse" class="mt-8 p-4 bg-[#2a2a2a] text-white rounded-xl shadow">
+  <h3 class="text-xl font-semibold mb-4">Dados extraídos do currículo:</h3>
+
+  <pre class="whitespace-pre-wrap text-sm">{{ cvResponse | json }}</pre>
+</div>
+
   </div>
 </div>

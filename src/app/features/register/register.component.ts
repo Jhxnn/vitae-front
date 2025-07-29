@@ -35,7 +35,7 @@ export class RegisterComponent {
   this.http.post<any>('https://vitae-api.onrender.com/api/v1/user', body)
     .subscribe({
       next: (user) => {
-        localStorage.setItem('userId', user.id);
+        localStorage.setItem('userId', user.userId);
         this.notification.showSuccess('Usuário cadastrado com sucesso!');
         this.router.navigate(['/upload-cv']);
       },
