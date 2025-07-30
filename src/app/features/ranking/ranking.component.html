@@ -1,15 +1,13 @@
 <div class="min-h-screen bg-[#1F1E29] text-white pt-36 px-6">
-      <div *ngIf="isLoading" class="flex justify-center items-center min-h-screen">
-  <svg class="animate-spin h-12 w-12 text-[#1ED6B6]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-  </svg>
-</div>
-  <h1 class="text-3xl font-bold mb-6 text-center text-[#1ED6B6]">Ranking dos Melhores Currículos</h1>
-
-  <div class="space-y-4 max-w-4xl mx-auto">
   
 
+  <h1 class="text-3xl font-bold mb-6 text-center text-[#1ED6B6]">Ranking dos Melhores Currículos</h1>
+
+  <div *ngIf="isLoading" class="flex justify-center items-center h-40">
+    <span class="animate-spin rounded-full h-10 w-10 border-4 border-[#1ED6B6] border-t-transparent"></span>
+  </div>
+
+  <div *ngIf="!isLoading" class="space-y-4 max-w-4xl mx-auto">
     <div
       *ngFor="let item of ranking; let i = index"
       class="bg-[#2A2938] p-4 rounded-xl shadow-md border-l-4 border-[#1ED6B6]"
