@@ -41,7 +41,6 @@ export class LoginComponent {
     .subscribe({
       next: (user) => {
         localStorage.setItem('userId', user.userId);
-        this.notification.showSuccess('Login realizado com sucesso!');
         this.router.navigate(['/upload-cv']);
         this.isLoading = false;
       },

@@ -29,36 +29,44 @@ export class UploadCvComponent {
   }
 
   onSubmit(): void {
-    if (!this.selectedFile) {
-      this.notification.showError('Nenhum arquivo selecionado.');
-      return;
-    }
+  if (!this.selectedFile) {
+    this.notification.showError('Nenhum arquivo selecionado.');
+    return;
+  }
 
-    const userId = localStorage.getItem('userId');
-    if (!userId) {
-      this.notification.showError('Usuário não identificado.');
-      return;
-    }
+  const userId = localStorage.getItem('userId');
+  if (!userId) {
+    this.notification.showError('Usuário não identificado.');
+    return;
+  }
 
-    const formData = new FormData();
-    formData.append('file', this.selectedFile);
-    formData.append('userId', userId);
+  const formData = new FormData();
+  formData.append('file', this.selectedFile);
+  formData.append('userId', userId);
 
-    this.isLoading = true;
+  this.isLoading = true;
 
-    this.http.post('https://vitae-api.onrender.com/api/v1/cv', formData).subscribe({
-      next: (res) => {
-        this.notification.showSuccess('Currículo enviado com sucesso!');
-        this.selectedFile = null;
-        this.cvResponse = res; 
-      },
-      error: (err: HttpErrorResponse) => {
-        console.error(err);
+  this.http.post('https://vitae-api.onrender.com/api/v1/cv', formData).subscribe({
+    next: (res) => {
+      this.notification.showSuccess('Currículo avaliado com sucesso!');
+      this.selectedFile = null;
+      this.cvResponse = res;
+    },
+    error: (err: HttpErrorResponse) => {
+      console.error(err);
+      if (err.status === 400) {
+        this.notification.showError('Você já possui 3 currículos cadastrados.');
+          this.isLoading = false;
+
+      } else {
         this.notification.showError('Erro ao enviar currículo.');
-      },
-      complete: () => {
         this.isLoading = false;
       }
-    });
-  }
+    },
+    complete: () => {
+      this.isLoading = false;
+    }
+  });
+}
+
 }
