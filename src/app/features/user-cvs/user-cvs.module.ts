@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { UserCvsRoutingModule } from './user-cvs-routing.module';
 import { UserCvsComponent } from './user-cvs.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -11,7 +13,9 @@ import { UserCvsComponent } from './user-cvs.component';
   ],
   imports: [
     CommonModule,
-    UserCvsRoutingModule
+    UserCvsRoutingModule,
+    FormsModule,
+    HttpClientModule
   ]
 })
 export class UserCvsModule { }
