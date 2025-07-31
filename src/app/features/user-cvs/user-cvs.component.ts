@@ -18,6 +18,8 @@ export class UserCvsComponent implements OnInit {
   showConfirmModal = false;
   cvToDelete: Cv | null = null;
 
+  showSuccessMessage = false;
+
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
@@ -51,28 +53,32 @@ export class UserCvsComponent implements OnInit {
   }
 
   cancelDelete() {
-    this.cvToDelete = null;
-    this.showConfirmModal = false;
+    this.closeConfirmModal();
   }
 
- confirmDelete() {
-  if (!this.cvToDelete) return;
+  confirmDelete() {
+    if (!this.cvToDelete) return;
 
-  // Fecha o modal imediatamente
-  this.closeConfirmModal();
+    const cvIdToDelete = this.cvToDelete.cvId;
+    this.closeConfirmModal();
+    this.isLoading = true;
 
-  this.isLoading = true;
-  this.http.delete(`https://vitae-api.onrender.com/api/v1/cv/${this.cvToDelete.cvId}`).subscribe({
-    next: () => {
-      this.loadCvs();
-    },
-    error: (err) => {
-      console.error(err);
-      alert('Erro ao excluir currículo.');
-      this.isLoading = false;
-    }
-  });
-}
+    this.http.delete(`https://vitae-api.onrender.com/api/v1/cv/${cvIdToDelete}`).subscribe({
+      next: () => {
+        this.loadCvs();
+        this.showSuccessMessage = true;
+
+        setTimeout(() => {
+          this.showSuccessMessage = false;
+        }, 3000);
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Erro ao excluir currículo.');
+        this.isLoading = false;
+      }
+    });
+  }
 
   closeConfirmModal() {
     this.showConfirmModal = false;
